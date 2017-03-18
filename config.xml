@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+<set>Key</set>
+<del>Key</del>
+<kget>Key</kget>
+<push>List</push>
+<pop>List</pop>
+</config>
