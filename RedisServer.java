@@ -117,7 +117,7 @@ public  class RedisServer{
 
 								command.put(redisApp);
 								String slog=sbcmd.toString();
-								RedisLog.log(ssk,slog.substring(0,slog.length()-1));
+								RedisLog.log(ssk,slog.substring(0,slog.length()));
 								
 							}
 
