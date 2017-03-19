@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
-<set>Key</set>
-<del>Key</del>
-<kget>Key</kget>
-<push>List</push>
-<pop>List</pop>
+<set>RedisKey.set</set>
+<del>RedisKey.del</del>
+<kget>RedisKey.get</kget>
+<push>RedisList.push</push>
+<pop>RedisList.pop</pop>
 </config>

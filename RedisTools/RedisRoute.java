@@ -7,14 +7,11 @@ import java.nio.channels.*;
 import java.nio.channels.SelectionKey;  
 import java.nio.channels.Selector;  
 import java.nio.channels.ServerSocketChannel;  
-import java.nio.channels.SocketChannel;  
-
-import RedisClass.myRedis;
+import java.nio.channels.SocketChannel; 
+import java.lang.reflect.*; 
 
 public class RedisRoute{
-	
 public static HashMap<String,String> cmd;
-
 static{
 
 		cmd=RedisDom.config();
@@ -24,7 +21,7 @@ public static String parse(SocketChannel sc,String str){
 
 String[] token=str.trim().toLowerCase().split("\\s+");
 
-if(token.length<=1){
+if(token.length<1){
 
 	  RedisLog.log(sc,"invalid command");
 
@@ -34,31 +31,27 @@ if(token.length<=1){
 
 String key=token[0];
 
-System.out.println("*************");
-Iterator iterator = RedisRoute.cmd.keySet().iterator();
-String tmp;
-
- while(iterator.hasNext()){                      
-      tmp =(String)iterator.next();
-    System.out.println(tmp+": "+RedisRoute.cmd.get(tmp));              
-}
-
-	System.out.println("*************");
-
-
 if(!RedisRoute.cmd.containsKey(key)){
 
 		RedisLog.log(sc,"unknown command");
 		return "unknown command";
 	}
 
-myRedis app;	
-
 try{
 
-Class<?> cls=Class.forName("RedisClass.Redis"+(String)RedisRoute.cmd.get(key));
+String[] way=RedisRoute.cmd.get(key).split("\\.");
+if(way.length!=2){
+		RedisLog.log(sc,"config error!");
+		return "config error!";
+}
 
-app=(myRedis)cls.newInstance();
+Class<?> cls=Class.forName("RedisClass."+way[0]);
+
+Object app=cls.newInstance();
+
+Method action=cls.getMethod(way[1],String.class);
+
+return (String)(action.invoke(app,str));
 
 }catch(Exception e){
 
@@ -68,6 +61,6 @@ app=(myRedis)cls.newInstance();
 
 	return "system error!";
 }
-return app.run(sc,token);
+
 }
 }

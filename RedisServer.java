@@ -25,6 +25,7 @@ public  class RedisServer{
 		public static LinkedList<SelectionKey> key;
 		public static LinkedBlockingQueue<SelectionKey> client;
 		public static LinkedBlockingQueue<Redis> command;
+
 		public static Selector selector;
 		public static SelectionKey sk;
 		public static ServerSocketChannel server;
@@ -109,7 +110,8 @@ public  class RedisServer{
 
 								cb.clear();
 								
-								redisApp=new Redis();
+
+								redisApp=cacheRedis.get();
 								redisApp.cli=ssk;
 								redisApp.cmd=sbcmd.toString();
 
@@ -140,18 +142,17 @@ public  class RedisServer{
 
 	}
 
-
-	public static void init(String[] argv){
+public static void init(String[] argv){
 
 		try{
 
   	key=new LinkedList<SelectionKey>();
 		client=new LinkedBlockingQueue<SelectionKey>();
 		command=new LinkedBlockingQueue<Redis>();
-			
+
 
   	server= ServerSocketChannel.open();
-//System.out.println(Integer.parseInt(argv[0]));
+
 		server.socket().bind(new InetSocketAddress("127.0.0.1",Integer.parseInt(argv[0])));
 
 		server.configureBlocking(false);

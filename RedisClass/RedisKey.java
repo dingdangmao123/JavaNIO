@@ -4,14 +4,13 @@ import java.util.*;
 import java.nio.channels.SocketChannel;  
 
 
-public class RedisKey implements myRedis{
+public class RedisKey{
 
  public static HashMap<String,String> storage=new HashMap<String,String>();
 
- public String run(SocketChannel sc,String[] token){
+public String set(String str){
 
- 			if(token[0].equals("set"))
- 			{
+				String[] token=str.trim().toLowerCase().split("\\s+");
  				if(token.length!=3)
  					 return "set error";
 
@@ -19,25 +18,30 @@ public class RedisKey implements myRedis{
 				show();
 				return old;
 
- 			}else if(token[0].equals("del")){
+}
 
+public String del(String str){
+
+				String[] token=str.trim().toLowerCase().split("\\s+");
 				if(token.length!=2)
  					 return "del error";
 				String old=RedisKey.storage.remove(token[1]);	
 				show();
  				return old;
 
- 			}else{
- 				
- 				if(token.length!=2)
+
+}
+
+public String get(String str){
+			String[] token=str.trim().toLowerCase().split("\\s+");
+			if(token.length!=2)
  					 return "key get error";
  				String old=RedisKey.storage.get(token[1]);
 				show();
 				return old;
- 			}
 
 
- }
+}
 public void show(){
   
 	System.out.println("*************");

@@ -14,12 +14,12 @@ public class pusher implements Runnable{
 		LinkedBlockingQueue<SelectionKey> client;
     LinkedBlockingQueue<Redis> command;
 
-   public	pusher(LinkedBlockingQueue<SelectionKey> client,LinkedBlockingQueue<Redis> command){
+   public	pusher(LinkedBlockingQueue<SelectionKey> client,
+   	LinkedBlockingQueue<Redis> command){
 
    	this.client=client;
    	this.command=command;
-
-   }
+		}
 
    public void run(){
 
@@ -52,10 +52,15 @@ public class pusher implements Runnable{
 
 							e.printStackTrace();
 							System.out.println("write exception!");
-							Thread.sleep(3000);
+							
+
+						}finally{
+
+							cacheRedis.set(tmp);
+							cb.clear();
 
 						}
-						cb.clear();
+
 						}
 
 			}

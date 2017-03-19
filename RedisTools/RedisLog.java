@@ -23,8 +23,17 @@ public class RedisLog{
 		try{
 
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		InetSocketAddress iaddr=(InetSocketAddress)sc.getRemoteAddress();
-		RedisLog.bufflog.write("["+iaddr.getPort()+" "+df.format(new Date())+"] "+str);
+		if(null!=sc){
+
+				InetSocketAddress iaddr=(InetSocketAddress)sc.getRemoteAddress();
+				RedisLog.bufflog.write("["+iaddr.getPort()+" "+df.format(new Date())+"] "+str);
+		
+		}else{
+
+				RedisLog.bufflog.write(df.format(new Date())+"] "+str);
+
+		}
+		
 		RedisLog.bufflog.newLine();
 		RedisLog.bufflog.flush();
 

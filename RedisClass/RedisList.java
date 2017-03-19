@@ -4,35 +4,38 @@ import java.util.*;
 import java.nio.channels.SocketChannel;  
 
 
-public class RedisList implements myRedis{
+public class RedisList{
 
 public static LinkedList<String> storage=new LinkedList<String>();
 
-public String run(SocketChannel sc,String[] token){
+public String push(String str){
 
- 			if(token[0].equals("push"))
- 			{
- 				if(token.length<=1)
+				String[] token=str.trim().toLowerCase().split("\\s+");
+ 				if(token.length<2)
  					 return "push error";
- 			
- 				for(int i=0;i<token.length;i++)
+
+				for(int i=token.length-1;i>0;i--)
  						RedisList.storage.add(token[i]);
 
 				show();
 				return "OK!";
 
- 			}else if(token[0].equals("pop")){
 
+}
+public String pop(String str){
+
+				String[] token=str.trim().toLowerCase().split("\\s+");
+				for(String v:token)
+					 System.out.println(v);
 				if(token.length!=1)
- 					 return "del error";
+ 					 return "pop error";
+ 				if(RedisList.storage.size()==0)
+ 					 return "there is no element";
+
 				String old=RedisList.storage.pop();	
 				show();
  				return old;
-
- 			}
-return "OK!";
-
- }
+}
 public void show(){
   
 System.out.println("*************");
