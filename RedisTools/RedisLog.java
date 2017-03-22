@@ -13,7 +13,7 @@ public class RedisLog{
 	static{
 	try{
 	
-  bufflog=new BufferedWriter(new OutputStreamWriter(new FileOutputStream("redis.log")));
+  	bufflog=new BufferedWriter(new OutputStreamWriter(new FileOutputStream("redis.log")));
   
 	}catch(Exception e){}
 
@@ -22,25 +22,26 @@ public class RedisLog{
 			
 		try{
 
-		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		if(null!=sc){
+					SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+					if(null!=sc){
 
-				InetSocketAddress iaddr=(InetSocketAddress)sc.getRemoteAddress();
-				RedisLog.bufflog.write("["+iaddr.getPort()+" "+df.format(new Date())+"] "+str);
+						InetSocketAddress iaddr=(InetSocketAddress)sc.getRemoteAddress();
+						RedisLog.bufflog.write("["+iaddr.getPort()+" "+df.format(new Date())+"] "+str);
 		
-		}else{
+					}else{
 
-				RedisLog.bufflog.write(df.format(new Date())+"] "+str);
+								RedisLog.bufflog.write(df.format(new Date())+"] "+str);
 
-		}
+					}
 		
-		RedisLog.bufflog.newLine();
-		RedisLog.bufflog.flush();
+					RedisLog.bufflog.newLine();
+					RedisLog.bufflog.flush();
 
 		}catch(Exception e){
 
-		e.printStackTrace();
-		System.out.println("log exception!");
+					e.printStackTrace();
+					System.out.println("log exception!");
 
 		}
+		
 		}}

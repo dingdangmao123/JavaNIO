@@ -15,6 +15,7 @@ public class Redis{
 				return sk.getPort()+":"+cmd;
 
 			}catch(Exception e){
+				
 				e.printStackTrace();
 			}
 				return "error";

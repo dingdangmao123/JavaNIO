@@ -21,7 +21,6 @@ import RedisTools.*;
 public  class RedisServer{
 
 
-	
 		public static LinkedList<SelectionKey> key;
 		public static LinkedBlockingQueue<SelectionKey> client;
 		public static LinkedBlockingQueue<Redis> command;
@@ -36,6 +35,7 @@ public  class RedisServer{
 		System.out.println("server start........");
 
 		init(argv);
+
 		run();
 
 	}
@@ -59,9 +59,9 @@ public  class RedisServer{
 
 				}catch(Exception e){
 
-					e.printStackTrace();
+						e.printStackTrace();
 
-					continue;
+						continue;
 				}
 
 				if(flag<=0)
@@ -72,14 +72,10 @@ public  class RedisServer{
 
 				while(it.hasNext()){ 
 
-
 						keycli=(SelectionKey)it.next(); 
-
 						try{
 							
-							//Thread.sleep(3000);
-
-    					if(keycli.isAcceptable()) { 
+							if(keycli.isAcceptable()) { 
 
     						System.out.println("accept");
     						sockcli=(SocketChannel)((ServerSocketChannel)(keycli.channel())).accept();
@@ -131,16 +127,11 @@ public  class RedisServer{
 
 			it.remove();
 				
-
-		}
-
-
+			}
 
 	}
 
-
-
-	}
+}
 
 public static void init(String[] argv){
 
@@ -149,9 +140,7 @@ public static void init(String[] argv){
   	key=new LinkedList<SelectionKey>();
 		client=new LinkedBlockingQueue<SelectionKey>();
 		command=new LinkedBlockingQueue<Redis>();
-
-
-  	server= ServerSocketChannel.open();
+		server= ServerSocketChannel.open();
 
 		server.socket().bind(new InetSocketAddress("127.0.0.1",Integer.parseInt(argv[0])));
 

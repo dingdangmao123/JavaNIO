@@ -33,6 +33,7 @@ public String del(String str){
 }
 
 public String get(String str){
+	
 			String[] token=str.trim().toLowerCase().split("\\s+");
 			if(token.length!=2)
  					 return "key get error";
@@ -44,16 +45,16 @@ public String get(String str){
 }
 public void show(){
   
-	System.out.println("*************");
- Iterator iterator = RedisKey.storage.keySet().iterator();
- String tmp;
+		System.out.println("*************");
+ 		Iterator iterator = RedisKey.storage.keySet().iterator();
+ 		String tmp;
 
- while(iterator.hasNext()){                      
-      tmp =(String)iterator.next();
-    System.out.println(tmp+":"+RedisKey.storage.get(tmp));              
-}
-	System.out.println("*************");
+ 		while(iterator.hasNext()){                      
+     	  tmp =(String)iterator.next();
+    	  System.out.println(tmp+":"+RedisKey.storage.get(tmp));              
+		}
+			System.out.println("*************");
 
-}
+	}
 
 }
