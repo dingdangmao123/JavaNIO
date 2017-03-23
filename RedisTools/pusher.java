@@ -36,15 +36,13 @@ public class pusher implements Runnable{
 					
 					System.out.println(tmp);
 					res=RedisRoute.parse(tmp.cli,tmp.cmd);
-
 					res=res+"*";
-					
 					echo.write(tmp,res);
 					cacheRedis.set(tmp);
 
 				}
 
-		}
+			}
 
 
 		}catch(Exception e){  
