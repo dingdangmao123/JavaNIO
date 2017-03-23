@@ -16,7 +16,6 @@ public class echo{
 			cb.put(v);
 
 		cb.flip();
-
 		try{
 
 			msg.cli.write(cb);

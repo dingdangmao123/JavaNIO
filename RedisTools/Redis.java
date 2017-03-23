@@ -19,6 +19,5 @@ public class Redis{
 				e.printStackTrace();
 			}
 				return "error";
-
-	}
+}
 }

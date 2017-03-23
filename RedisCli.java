@@ -42,7 +42,7 @@ public class RedisCli{
      }catch(Exception e){System.out.println(e);}
 
 
-   }
+  }
 
  }catch(Exception e){ 
   System.out.println(e);

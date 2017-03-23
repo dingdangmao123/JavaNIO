@@ -24,8 +24,8 @@ public class RedisDom{
      Iterator<Element> it=root.getChildren().iterator();  
      Element tmp;
      while(it.hasNext()){
-      tmp=it.next();
-      config.put(tmp.getName(),tmp.getValue());
+        tmp=it.next();
+        config.put(tmp.getName(),tmp.getValue());
     }
 
     Iterator iterator = config.keySet().iterator();

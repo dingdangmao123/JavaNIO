@@ -11,11 +11,11 @@ public class RedisLog{
 	public static BufferedWriter bufflog;
 
 	static{
-		try{
+					try{
 			
-			bufflog=new BufferedWriter(new OutputStreamWriter(new FileOutputStream("redis.log")));
+					bufflog=new BufferedWriter(new OutputStreamWriter(new FileOutputStream("redis.log")));
 			
-		}catch(Exception e){}
+					}catch(Exception e){}
 
 	}
 	public static void log(SocketChannel sc,String str){

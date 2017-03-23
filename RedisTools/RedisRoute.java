@@ -15,7 +15,7 @@ public class RedisRoute{
 	public static HashMap<String,String> cmd;
 	static{
 
-		cmd=RedisDom.config();
+					cmd=RedisDom.config();
 	}
 
 	public static String parse(SocketChannel sc,String str){
