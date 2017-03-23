@@ -23,32 +23,32 @@ public class RedisCli{
 
       while(true){
 
-       try{
+        try{
 
-        System.out.print(">> ");
-        while((tmp=bd.readLine())!=null){
+          System.out.print(">> ");
+          while((tmp=bd.readLine())!=null){
 
-          out.write(tmp.getBytes());
-          StringBuilder sb=new StringBuilder();
-          while((cc=br.read())!=(int)'*'){
-           sb.append((char)cc);
+            out.write(tmp.getBytes());
+            StringBuilder sb=new StringBuilder();
+            while((cc=br.read())!=(int)'*'){
+              sb.append((char)cc);
 
-         }
+            }
 
-         System.out.println("from server: "+sb.toString());
-         System.out.print(">> ");
-       }
-       
-     }catch(Exception e){System.out.println(e);}
+            System.out.println("from server: "+sb.toString());
+            System.out.print(">> ");
+          }
+          
+        }catch(Exception e){System.out.println(e);}
 
+
+      }
+
+    }catch(Exception e){ 
+      System.out.println(e);
+    }
 
   }
-
- }catch(Exception e){ 
-  System.out.println(e);
-}
-
-}
 
 }
 
