@@ -56,7 +56,6 @@ public  class RedisServer{
 			}catch(Exception e){
 
 				e.printStackTrace();
-
 				continue;
 			}
 
