@@ -10,7 +10,6 @@ public class echo{
 
 	public static void write(Redis msg,String res){
 
-
 		ByteBuffer cb=ByteBuffer.allocate(128);
 		for(byte v:res.getBytes())
 			cb.put(v);
