@@ -12,37 +12,35 @@ public class RedisDom{
 
  public static HashMap<String,String> config(){
 
- 						HashMap<String,String> config=new HashMap<String,String>();
- 						StringBuilder sb=new StringBuilder();
-						SAXBuilder builder = new SAXBuilder();  
-						Document document; 
+   HashMap<String,String> config=new HashMap<String,String>();
+   StringBuilder sb=new StringBuilder();
+   SAXBuilder builder = new SAXBuilder();  
+   Document document; 
 
-						try{
+   try{
 
-         				document= builder.build("config.xml");  
+     document= builder.build("config.xml");  
+     Element root = document.getRootElement();
+     Iterator<Element> it=root.getChildren().iterator();  
+     Element tmp;
+     while(it.hasNext()){
+      tmp=it.next();
+      config.put(tmp.getName(),tmp.getValue());
+    }
 
+    Iterator iterator = config.keySet().iterator();
+    String ttmp;
 
-            		Element root = document.getRootElement();
-            		Iterator<Element> it=root.getChildren().iterator();  
-            		Element tmp;
-            		while(it.hasNext()){
-										tmp=it.next();
-            				config.put(tmp.getName(),tmp.getValue());
-            		}
+  }catch(Exception e){
 
-            		Iterator iterator = config.keySet().iterator();
- 								String ttmp;
+    System.out.println(e);
+    System.exit(0);
 
-						}catch(Exception e){
+  }
 
-          		System.out.println(e);
-          		System.exit(0);
+  return config;
 
-          	}
-
-          return config;
-
-	
+  
 }
 
 }

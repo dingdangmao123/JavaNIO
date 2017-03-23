@@ -12,57 +12,43 @@ public class RedisCli{
 	
 	public static void main(String argv[]){
 
+    try{
 
-      try{
+      Socket socket = new Socket(argv[0],Integer.parseInt(argv[1]));
+      OutputStream out=socket.getOutputStream();
+      BufferedReader br=new BufferedReader(new InputStreamReader(socket.getInputStream()));
+      BufferedReader bd=new BufferedReader(new InputStreamReader(System.in));
+      String tmp;
+      int cc;
 
- 
+      while(true){
 
-         Socket socket = new Socket(argv[0],Integer.parseInt(argv[1]));
-         OutputStream out=socket.getOutputStream();
-         BufferedReader br=new BufferedReader(new InputStreamReader(socket.getInputStream()));
-      
-  
+       try{
 
-         BufferedReader bd=new BufferedReader(new InputStreamReader(System.in));
-         String tmp;
-         int cc;
+        System.out.print(">> ");
+        while((tmp=bd.readLine())!=null){
 
-        while(true){
+          out.write(tmp.getBytes());
+          StringBuilder sb=new StringBuilder();
+          while((cc=br.read())!=(int)'*'){
+           sb.append((char)cc);
 
-           try{
-     
-            System.out.print(">> ");
-             while((tmp=bd.readLine())!=null){
+         }
 
-                  
-                  out.write(tmp.getBytes());
-                 
-                  StringBuilder sb=new StringBuilder();
-                  while((cc=br.read())!=(int)'*'){
-                   sb.append((char)cc);
-                  }
-                  
-                  System.out.println("from server: "+sb.toString());
-                  System.out.print(">> ");
-              }
+         System.out.println("from server: "+sb.toString());
+         System.out.print(">> ");
+       }
        
-        }catch(Exception e){System.out.println(e);}
+     }catch(Exception e){System.out.println(e);}
 
 
-        }
+   }
 
-       
-
-
-       }catch(Exception e){ 
-        System.out.println(e);
-      }
-
+ }catch(Exception e){ 
+  System.out.println(e);
 }
 
-
-
-
+}
 
 }
 

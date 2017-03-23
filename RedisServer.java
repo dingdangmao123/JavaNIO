@@ -21,16 +21,16 @@ import RedisTools.*;
 public  class RedisServer{
 
 
-		public static LinkedList<SelectionKey> key;
-		public static LinkedBlockingQueue<SelectionKey> client;
-		public static LinkedBlockingQueue<Redis> command;
+	public static LinkedList<SelectionKey> key;
+	public static LinkedBlockingQueue<SelectionKey> client;
+	public static LinkedBlockingQueue<Redis> command;
 
-		public static Selector selector;
-		public static SelectionKey sk;
-		public static ServerSocketChannel server;
-		public static Thread tp;
+	public static Selector selector;
+	public static SelectionKey sk;
+	public static ServerSocketChannel server;
+	public static Thread tp;
 
-		public static void main(String[] argv){
+	public static void main(String[] argv){
 
 		System.out.println("server start........");
 
@@ -52,113 +52,116 @@ public  class RedisServer{
 		Redis redisApp;
 
 		while(true){
-				
-				try{
+			
+			try{
 
-						flag=selector.select();
-
-				}catch(Exception e){
-
-						e.printStackTrace();
-
-						continue;
-				}
-
-				if(flag<=0)
-						continue;
-
-				selectedKeys=selector.selectedKeys(); 
-		 		it= selectedKeys.iterator();
-
-				while(it.hasNext()){ 
-
-						keycli=(SelectionKey)it.next(); 
-						try{
-							
-							if(keycli.isAcceptable()) { 
-
-    						System.out.println("accept");
-    						sockcli=(SocketChannel)((ServerSocketChannel)(keycli.channel())).accept();
-								sockcli.configureBlocking(false);
-    						keytmp=sockcli.register(selector,SelectionKey.OP_READ);
-    						client.add(keytmp);
-    					
-							}else if(keycli.isReadable()){
-
-								SocketChannel ssk=((SocketChannel)(keycli.channel()));
-								StringBuilder sbcmd=new StringBuilder();
-								
-								if(-1==ssk.read(cb)){
-
-								   		keycli.cancel();
-											ssk.close();
-											key.remove(keycli);
-											System.out.println("client close.....");
-											continue;
-
-								   	}
-
-								cb.flip();
-
-								while(cb.hasRemaining()){
-										sbcmd.append((char)cb.get());
-								}
-
-								cb.clear();
-								
-
-								redisApp=cacheRedis.get();
-								redisApp.cli=ssk;
-								redisApp.cmd=sbcmd.toString();
-
-								command.put(redisApp);
-								String slog=sbcmd.toString();
-								RedisLog.log(ssk,slog.substring(0,slog.length()));
-								
-							}
-
-						
+				flag=selector.select();
 
 			}catch(Exception e){
 
 				e.printStackTrace();
-			
+
+				continue;
 			}
 
-			it.remove();
+			if(flag<=0)
+				continue;
+
+			selectedKeys=selector.selectedKeys(); 
+			it= selectedKeys.iterator();
+
+			while(it.hasNext()){ 
+
+				keycli=(SelectionKey)it.next(); 
+
+				try{
+					
+					if(keycli.isAcceptable()) { 
+
+						System.out.println("accept");
+						sockcli=(SocketChannel)((ServerSocketChannel)(keycli.channel())).accept();
+						sockcli.configureBlocking(false);
+						keytmp=sockcli.register(selector,SelectionKey.OP_READ);
+						client.add(keytmp);
+						
+					}else if(keycli.isReadable()){
+
+						SocketChannel ssk=((SocketChannel)(keycli.channel()));
+						StringBuilder sbcmd=new StringBuilder();
+						
+						if(-1==ssk.read(cb)){
+
+							keycli.cancel();
+							ssk.close();
+							key.remove(keycli);
+							System.out.println("client close.....");
+							continue;
+
+						}
+
+						cb.flip();
+
+						while(cb.hasRemaining()){
+							sbcmd.append((char)cb.get());
+						}
+
+						cb.clear();
+						
+
+						redisApp=cacheRedis.get();
+						redisApp.cli=ssk;
+						redisApp.cmd=sbcmd.toString();
+
+						if(false==command.offer(redisApp)){
+							echo.write(redisApp,"System busy!");
+							continue;
+						}
+						
+						String slog=sbcmd.toString();
+						RedisLog.log(ssk,slog.substring(0,slog.length()));
+						
+					}
+
+				}catch(Exception e){
+
+					e.printStackTrace();
+					
+				}
+
+				it.remove();
 				
 			}
 
+		}
+
 	}
 
-}
-
-public static void init(String[] argv){
+	public static void init(String[] argv){
 
 		try{
 
-  	key=new LinkedList<SelectionKey>();
-		client=new LinkedBlockingQueue<SelectionKey>();
-		command=new LinkedBlockingQueue<Redis>();
-		server= ServerSocketChannel.open();
+			key=new LinkedList<SelectionKey>();
+			client=new LinkedBlockingQueue<SelectionKey>();
+			command=new LinkedBlockingQueue<Redis>();
+			server= ServerSocketChannel.open();
 
-		server.socket().bind(new InetSocketAddress("127.0.0.1",Integer.parseInt(argv[0])));
+			server.socket().bind(new InetSocketAddress("127.0.0.1",Integer.parseInt(argv[0])));
 
-		server.configureBlocking(false);
+			server.configureBlocking(false);
 
-		selector=Selector.open();
-		sk=server.register(selector,SelectionKey.OP_ACCEPT);
+			selector=Selector.open();
+			sk=server.register(selector,SelectionKey.OP_ACCEPT);
 
-		pusher app=new pusher(client,command);
-		tp=new Thread(app);
-		tp.start();
+			pusher app=new pusher(client,command);
+			tp=new Thread(app);
+			tp.start();
 
 		}catch(Exception e){ 
 
-		e.printStackTrace();
-		System.exit(0);
+			e.printStackTrace();
+			System.exit(0);
 
-	}
+		}
 
 
 	}
