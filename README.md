@@ -1,5 +1,5 @@
  
-## 一个简单的java开发的NoSQL
+## 一个简单的java nio开发的NoSQL demo
 #### 简单参考了Redis，主要是一些指令，这里直接采用字符串表示
 ## 特点
 #### 具体的指令和存储完全由用户通过config.xml定义，具体的数据结构和存储逻辑位于RedisClass目录下，系统也提供了几个简单的实现支持key-value,list等，
